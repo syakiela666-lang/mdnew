@@ -1,0 +1,17 @@
+{
+  "name": "MD-Text",
+  "short_name": "MD-Text",
+  "description": "Aplikasi Catatan",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#FAFAFA",
+  "theme_color": "#0066CC",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
