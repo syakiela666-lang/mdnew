@@ -20,8 +20,8 @@
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked-katex-extension/lib/index.umd.js"></script>
     <!-- Custom CSS -->
-  <script type="module" crossorigin src="/assets/index-Dk8ZtHrH.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-BYGNdNWY.css">
+  <script type="module" crossorigin src="/assets/index-BM2-P-hf.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-9YNb4sWO.css">
 </head>
 <body>
 
@@ -122,13 +122,29 @@
                         </svg>
                         Select All
                     </button>
-                    <button type="button" id="paste-content-btn" style="padding: 4px 12px; font-size: 13px; font-weight: 500; border-radius: 6px; background: var(--primary-color, #0066CC); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 4px;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                        Paste
-                    </button>
+                    <div style="display: flex; gap: 24px;">
+                        <button type="button" id="format-green-btn" style="padding: 4px 12px; font-size: 13px; font-weight: 500; border-radius: 6px; background: #1b5e20; color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 3v18"></path>
+                                <path d="M5 8h14"></path>
+                                <path d="M5 16h14"></path>
+                            </svg>
+                            Green
+                        </button>
+                        <button type="button" id="insert-line-btn" style="padding: 4px 12px; font-size: 13px; font-weight: 500; border-radius: 6px; background: var(--text-secondary, #6c757d); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            + Line
+                        </button>
+                        <button type="button" id="paste-content-btn" style="padding: 4px 12px; font-size: 13px; font-weight: 500; border-radius: 6px; background: var(--primary-color, #0066CC); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            Paste
+                        </button>
+                    </div>
                 </div>
                 <textarea id="input-content" rows="15" placeholder="Type Here" spellcheck="false" required></textarea>
             </div>
