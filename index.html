@@ -19,9 +19,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked-katex-extension/lib/index.umd.js"></script>
+    
+    <!-- Google API Scripts for Drive Sync -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://apis.google.com/js/api.js" async defer></script>
+    
     <!-- Custom CSS -->
-  <script type="module" crossorigin src="/assets/index-BM2-P-hf.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-9YNb4sWO.css">
+  <script type="module" crossorigin src="/assets/index-uKrt9XPo.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-FGln3ekP.css">
 </head>
 <body>
 
@@ -35,6 +40,9 @@
                     <!-- Kategori akan di-inject JS -->
                 </select>
                 <button id="settings-btn" class="manage-btn" aria-label="Pengaturan">⚙️</button>
+            </div>
+            <div class="search-wrapper">
+                <input type="text" id="search-input" class="search-input" placeholder="Search keyword (e.g. 0%)...">
             </div>
         </header>
 
@@ -63,7 +71,16 @@
                 </svg>
             </button>
             <h2 id="reading-title" class="reading-title">Judul Materi</h2>
-            <button id="copy-lesson-btn" class="edit-btn" aria-label="Copy Materi" style="margin-right: 8px; color: var(--text-secondary);">
+            <button id="copy-rich-lesson-btn" class="edit-btn" aria-label="Copy to Docs" title="Copy format Google Docs" style="margin-right: 8px; color: #1b5e20;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                    <path d="M9 14h6"></path>
+                    <path d="M9 18h6"></path>
+                    <path d="M9 10h6"></path>
+                </svg>
+            </button>
+            <button id="copy-lesson-btn" class="edit-btn" aria-label="Copy Materi (MD)" title="Copy format Markdown" style="margin-right: 8px; color: var(--text-secondary);">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -82,6 +99,37 @@
                 </svg>
             </button>
         </header>
+
+        <!-- FIND BAR (Muncul saat ada pencarian) -->
+        <div id="find-bar" style="display: none; position: sticky; top: 60px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 10px 20px; border-bottom: 1px solid var(--border-color); z-index: 9; flex-direction: row; align-items: center; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+            <div style="font-size: 14px; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-secondary);">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <span id="find-keyword" style="font-weight: 600; max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">0%</span> 
+                <span id="find-counter" style="color: var(--text-secondary); font-size: 13px; font-weight: 500; background: #f1f5f9; padding: 2px 8px; border-radius: 12px;">1/5</span>
+            </div>
+            <div style="display: flex; gap: 6px;">
+                <button id="find-prev-btn" style="padding: 6px 12px; cursor: pointer; border: 1px solid var(--border-color); border-radius: 6px; background: var(--surface-color); display: flex; align-items: center; justify-content: center;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                </button>
+                <button id="find-next-btn" style="padding: 6px 12px; cursor: pointer; border: 1px solid var(--border-color); border-radius: 6px; background: var(--surface-color); display: flex; align-items: center; justify-content: center;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div style="width: 1px; height: 20px; background-color: var(--border-color); margin: 0 4px; align-self: center;"></div>
+                <button id="find-close-btn" style="padding: 6px; cursor: pointer; border: none; background: transparent; color: var(--text-secondary); display: flex; align-items: center; justify-content: center;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
 
         <article id="lesson-content" class="markdown-body">
             <!-- Markdown content will be injected here -->
@@ -164,6 +212,27 @@
         </header>
 
         <section class="settings-container">
+            <!-- Google Drive Sync -->
+            <div class="settings-section">
+                <h3>Google Drive Sync</h3>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4;">
+                    Sinkronisasi data otomatis lintas device. Setelah login, data akan otomatis tersimpan dan ditarik dari Google Drive kamu di latar belakang.
+                </p>
+                <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 16px; background: var(--surface-color); padding: 12px; border: 1px solid var(--border-color); border-radius: 8px;">
+                    <div id="gdrive-status-indicator" style="width: 12px; height: 12px; border-radius: 50%; background-color: #ccc;"></div>
+                    <span id="gdrive-status-text" style="font-size: 14px; font-weight: 500;">Not Connected</span>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button id="gdrive-login-btn" class="save-btn" style="flex: 1; text-align: center; justify-content: center; margin: 0; background-color: #4285F4; display: flex; align-items: center; gap: 8px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                        Connect Google
+                    </button>
+                    <button id="gdrive-logout-btn" class="save-btn" style="flex: 1; text-align: center; justify-content: center; margin: 0; background-color: #E53E3E; display: none;">Disconnect</button>
+                </div>
+            </div>
+
+            <hr class="settings-divider">
+
             <!-- UI Scale Settings -->
             <div class="settings-section">
                 <h3>Ukuran Tampilan (Zoom)</h3>
